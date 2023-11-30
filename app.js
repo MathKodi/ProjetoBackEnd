@@ -7,7 +7,7 @@ const app = express()
 app.use(express.json())
 
 //rotas da api
-const usuarioRotas = require('./control/UsuarioAPI')
+const usuarioRotas = require('./routes/authAPI')
 app.use("/usuario", usuarioRotas)
 
 //rota inicial
