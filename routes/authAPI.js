@@ -20,10 +20,15 @@ router.post('/registrar', async(req, res) => {
     if (usuarioexistente) {
         return res.status(422).json({msg: 'utilize outro nome...'})
     }
-
     try{
-        let aux = await Usuario.salvar(nome, senha)
-        res.status(201).json({msg: 'usuario criado', aux: aux})
+        if(nome.includes('admin')){
+            let aux = await Usuario.salvar(nome, senha)
+            res.status(201).json({msg: 'admin criado', aux: aux})
+        } else{
+            let aux = await Usuario.salvar(nome, senha)
+            res.status(201).json({msg: 'usuario criado', aux: aux}) 
+        }
+        
     } catch(error){
         console.log(error)
         res.status(500).json({msg: 'erro no servidor'})
@@ -52,15 +57,20 @@ router.post("/login", async(req, res) => {
         return res.status(422).json({msg: 'senha invalida'})
     }
     try{
+
         const secret = process.env.SECRET
 
-        const token = jwt.sign(
+        if(nome.includes('admin')){
+            const token = jwt.sign(
             {
+                Admin: true,
                 id: usuarioexistente._id
             },
             secret,
-        )
-        res.status(200).json({msg: 'Autenticacao realizada', token})
+            )
+            res.status(200).json({msg: 'login realizado com sucesso - bem vindo ', nome, token})
+        }
+        
     }
     catch(error){
         console.log(error)
