@@ -16,18 +16,14 @@ router.post('/registrar', async(req, res) => {
     }
 
     //verificar se usuario existe
-    const usuarioexistente = await Usuario.findOne({nome: nome})
+    const usuarioexistente = await Usuario.buscar(nome)
     if (usuarioexistente) {
         return res.status(422).json({msg: 'utilize outro nome...'})
     }
     try{
-        if(nome.includes('admin')){
-            let aux = await Usuario.salvar(nome, senha)
-            res.status(201).json({msg: 'admin criado', aux: aux})
-        } else{
-            let aux = await Usuario.salvar(nome, senha)
-            res.status(201).json({msg: 'usuario criado', aux: aux}) 
-        }
+        let aux = await Usuario.salvar(nome, senha)
+        res.status(201).json({msg: 'Registrado! ', aux: aux}) 
+        
         
     } catch(error){
         console.log(error)
@@ -47,7 +43,7 @@ router.post("/login", async(req, res) => {
         return res.status(422).json({msg: 'erro -> digite uma senha'})
     }
     //verificar se usuario existe
-    const usuarioexistente = await Usuario.findOne({nome: nome})
+    const usuarioexistente = await Usuario.buscar(nome)
 
     if (!usuarioexistente) {
         return res.status(422).json({msg: 'usuario nao encontrado'})
@@ -57,20 +53,27 @@ router.post("/login", async(req, res) => {
         return res.status(422).json({msg: 'senha invalida'})
     }
     try{
-
         const secret = process.env.SECRET
-
         if(nome.includes('admin')){
             const token = jwt.sign(
             {
-                Admin: true,
+                admin: true,
+                nome: nome,
                 id: usuarioexistente._id
             },
             secret,
             )
-            res.status(200).json({msg: 'login realizado com sucesso - bem vindo ', nome, token})
+            res.status(200).json({msg: 'login realizado com sucesso - Admin ', nome, token})
+        } else{
+            const token = jwt.sign(
+                {
+                    nome: nome,
+                    id: usuarioexistente._id
+                },
+                secret,
+                )
+                res.status(200).json({msg: 'login realizado com sucesso - Usuario ', nome, token})
         }
-        
     }
     catch(error){
         console.log(error)

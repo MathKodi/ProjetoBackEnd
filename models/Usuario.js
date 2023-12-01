@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 
-
 const Usuario = mongoose.model('Usuario', {
     nome: String,
     senha: String
@@ -21,8 +20,13 @@ const excluir = async(id) => {
     return aux;
 }
 
-const buscar = async(id) => {
+const buscarId = async(id) => {
     const aux = await Usuario.findOne({_id: id})
+    return aux;
+}
+
+const buscar = async(nome) => {
+    const aux = await Usuario.findOne({nome: nome})
     return aux;
 }
 
@@ -31,5 +35,6 @@ module.exports = {
     salvar,
     atualizar,
     excluir,
+    buscarId,
     buscar,
 }
