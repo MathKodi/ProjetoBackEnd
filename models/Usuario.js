@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const jwt = require('jsonwebtoken')
 const Usuario = mongoose.model('Usuario', {
     nome: String,
     senha: String
@@ -10,8 +9,12 @@ const salvar = async (nome, senha) => {
     return aux;
 }
 
-const atualizar = async (id, nome) => {
+const atualizarNome = async (id, nome) => {
     const aux = await Usuario.findByIdAndUpdate(id, {nome: nome})
+    return aux;
+}
+const atualizarSenha = async (id, senha) => {
+    const aux = await Usuario.findByIdAndUpdate(id, {senha: senha})
     return aux;
 }
 
@@ -38,7 +41,8 @@ const buscar = async(nome) => {
 module.exports = {
     Usuario,
     salvar,
-    atualizar,
+    atualizarSenha,
+    atualizarNome,
     excluir,
     excluirNome,
     buscarId,

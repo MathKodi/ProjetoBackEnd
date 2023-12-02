@@ -91,13 +91,13 @@ router.post("/login", authhelper.verifDados, async(req, res) => {
     }
 })
 
-//usuario excluir sua conta 
+//usuario excluir sua conta !! perguntar p sor se outro usuario consegue excluir outro usuario
 router.delete("/excluirMinhaConta", authhelper.veriftoken, async(req, res) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     const secret = process.env.SECRET;
     const decoded = jwt.verify(token, secret);
-    const id= decoded.id
+    const id = decoded.id
     try{
         const usuario = await Usuario.excluir(id)
         return res.status(200).json({msg: "Sua conta foi excluida.", usuario: usuario});
@@ -111,6 +111,9 @@ router.delete("/excluirMinhaConta", authhelper.veriftoken, async(req, res) => {
 router.delete("/excluir/:nome", authhelper.verifAdmin, async(req, res) => {
     const nome = req.params.nome
     const usuario = await Usuario.buscar(nome)
+    if(!nome){
+        return res.status(404).json({msg:'nome não informado'})
+    }
     if(!usuario){
         return res.status(404).json({msg:'usuario nao encontrado'})
     }
@@ -124,6 +127,27 @@ router.delete("/excluir/:nome", authhelper.verifAdmin, async(req, res) => {
     }
 })
 
+//usuario alterar seu nome
+router.put('/attNome/:nome', authhelper.veriftoken, async(req, res) =>{
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    const secret = process.env.SECRET;
+    const decoded = jwt.verify(token, secret);
+    const id = decoded.id
+    const nomeparams = req.params.nome
+    if(!nomeparams){
+        return res.status(404).json({msg:'nome não informado para atualizar'})
+    }
+    try{
+        att = await Usuario.atualizarNome(id, nomeparams)
+        return res.status(200).json({msg: "Seu nome foi atualizado", att: att});
+    }  
+    catch(error){
+        console.log(error)
+        res.status(500).json({msg: 'erro no servidor'})
+    }
+
+})
 
 //privado - apenas para verificar o token funcionando
 router.get("/:id", authhelper.veriftoken, async (req, res) => {
