@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const jwt = require('jsonwebtoken')
 const Usuario = mongoose.model('Usuario', {
     nome: String,
     senha: String

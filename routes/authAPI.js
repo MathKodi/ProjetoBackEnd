@@ -4,6 +4,10 @@ const jwt = require('jsonwebtoken')
 const Usuario = require('../models/Usuario')
 const authhelper = require('../helpers/auth')
 
+//rota inicial
+router.get('/', (req,res) => {
+    res.status(200).json({msg: "rota para registrar e login =)"})
+})
 //registrar
 router.post('/registrar', async(req, res) => {
     const {nome, senha} = req.body
@@ -31,6 +35,36 @@ router.post('/registrar', async(req, res) => {
     }
 
 })
+//registar admin
+router.post('/admin', authhelper.verifAdmin, async (req, res) =>{
+    const {nome, senha} = req.body
+
+    if(!nome) {
+        return res.status(422).json({msg: 'erro -> digite um nome'})
+    }
+    if(!senha) {
+        return res.status(422).json({msg: 'erro -> digite uma senha'})
+    }
+
+    //verificar se usuario existe
+    const usuarioexistente = await Usuario.buscar(nome)
+    if (usuarioexistente) {
+        return res.status(422).json({msg: 'utilize outro nome...'})
+    }
+    //verificar se o nome contém admin
+    if(!nome.includes('admin')){
+        return res.status(422).json({msg: `o nome precisa ter 'admin' para se tornar um admin`})
+    }
+    try{
+        let aux = await Usuario.salvar(nome, senha)
+        res.status(201).json({msg: 'Registrado! ', aux: aux}) 
+         
+    } catch(error){
+        console.log(error)
+        res.status(500).json({msg: 'erro no servidor'})
+    }
+})
+
 
 //login
 router.post("/login", async(req, res) => {
@@ -83,10 +117,10 @@ router.post("/login", async(req, res) => {
 
 
 
-//privado
+//privado - apenas para verificar o token funcionando
 router.get("/:id", authhelper.veriftoken, async (req, res) => {
     const id = req.params.id
-    const user = await Usuario.buscar(id, '-senha')
+    const user = await Usuario.buscarId(id)
     if(!user){
         return res.status(404).json({msg:'usuario nao encontrado'})
     }
