@@ -34,5 +34,15 @@ module.exports = {
         } catch(error){
             res.status(400).json({msg: 'token invalido'})
         }
+    },
+    verifDados(req, res, next){
+        const { nome, senha} = req.body
+        if(!nome) {
+            return res.status(422).json({msg: 'erro -> digite um nome'})
+        }
+        if(!senha) {
+            return res.status(422).json({msg: 'erro -> digite uma senha'})
+        }
+        next()
     }
 }

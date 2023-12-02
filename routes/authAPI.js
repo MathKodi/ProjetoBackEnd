@@ -2,23 +2,16 @@ const router = require('express').Router();
 const jwt = require('jsonwebtoken')
 //models
 const Usuario = require('../models/Usuario')
-const authhelper = require('../helpers/auth')
+const authhelper = require('../helpers/auth');
 
 //rota inicial
 router.get('/', (req,res) => {
     res.status(200).json({msg: "rota para registrar e login =)"})
 })
+
 //registrar
-router.post('/registrar', async(req, res) => {
+router.post('/registrar', authhelper.verifDados, async(req, res) => {
     const {nome, senha} = req.body
-
-    if(!nome) {
-        return res.status(422).json({msg: 'erro -> digite um nome'})
-    }
-    if(!senha) {
-        return res.status(422).json({msg: 'erro -> digite uma senha'})
-    }
-
     //verificar se usuario existe
     const usuarioexistente = await Usuario.buscar(nome)
     if (usuarioexistente) {
@@ -33,19 +26,10 @@ router.post('/registrar', async(req, res) => {
         console.log(error)
         res.status(500).json({msg: 'erro no servidor'})
     }
-
 })
 //registar admin
-router.post('/admin', authhelper.verifAdmin, async (req, res) =>{
+router.post('/admin', authhelper.verifDados, authhelper.verifAdmin, async (req, res) =>{
     const {nome, senha} = req.body
-
-    if(!nome) {
-        return res.status(422).json({msg: 'erro -> digite um nome'})
-    }
-    if(!senha) {
-        return res.status(422).json({msg: 'erro -> digite uma senha'})
-    }
-
     //verificar se usuario existe
     const usuarioexistente = await Usuario.buscar(nome)
     if (usuarioexistente) {
@@ -67,18 +51,10 @@ router.post('/admin', authhelper.verifAdmin, async (req, res) =>{
 
 
 //login
-router.post("/login", async(req, res) => {
+router.post("/login", authhelper.verifDados, async(req, res) => {
     const {nome, senha} = req.body
-
-    if(!nome) {
-        return res.status(422).json({msg: 'erro -> digite um nome'})
-    }
-    if(!senha) {
-        return res.status(422).json({msg: 'erro -> digite uma senha'})
-    }
     //verificar se usuario existe
     const usuarioexistente = await Usuario.buscar(nome)
-
     if (!usuarioexistente) {
         return res.status(422).json({msg: 'usuario nao encontrado'})
     }
@@ -115,6 +91,24 @@ router.post("/login", async(req, res) => {
     }
 })
 
+//usuario excluir sua conta 
+router.delete("/excluirMinhaConta", authhelper.veriftoken, async(req, res) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    const secret = process.env.SECRET;
+    const decoded = jwt.verify(token, secret);
+    const id= decoded.id
+    try{
+        const usuario = await Usuario.excluir(id)
+        return res.status(200).json({msg: "Sua conta foi excluida.", usuario: usuario});
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({msg: 'erro no servidor'})
+    }
+})
+//admin excluir qqlr um
+router.delete("/excluir/")
 
 
 //privado - apenas para verificar o token funcionando

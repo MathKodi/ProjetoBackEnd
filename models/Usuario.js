@@ -20,6 +20,11 @@ const excluir = async(id) => {
     return aux;
 }
 
+const excluirNome = async(nome) =>{
+    const aux = await Usuario.findOneAndDelete({nome: nome})
+    return aux;
+}
+
 const buscarId = async(id) => {
     const aux = await Usuario.findOne({_id: id})
     return aux;
@@ -35,6 +40,7 @@ module.exports = {
     salvar,
     atualizar,
     excluir,
+    excluirNome,
     buscarId,
     buscar,
 }
