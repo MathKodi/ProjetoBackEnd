@@ -108,7 +108,21 @@ router.delete("/excluirMinhaConta", authhelper.veriftoken, async(req, res) => {
     }
 })
 //admin excluir qqlr um
-router.delete("/excluir/")
+router.delete("/excluir/:nome", authhelper.verifAdmin, async(req, res) => {
+    const nome = req.params.nome
+    const usuario = await Usuario.buscar(nome)
+    if(!usuario){
+        return res.status(404).json({msg:'usuario nao encontrado'})
+    }
+    try{
+        const removido = await Usuario.excluirNome(nome)
+        return res.status(200).json({msg: "Admin EXCLUIU essa conta", removido: removido});
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({msg: 'erro no servidor'})
+    }
+})
 
 
 //privado - apenas para verificar o token funcionando
