@@ -9,6 +9,11 @@ const salvar = async (nome, senha) => {
     return aux;
 }
 
+const atualizarId = async (id, nome, senha) => {
+    const aux = await Usuario.findByIdAndUpdate(id, {nome: nome, senha: senha})
+    return aux;
+}
+
 const atualizarNome = async (id, nome) => {
     const aux = await Usuario.findByIdAndUpdate(id, {nome: nome})
     return aux;
@@ -43,6 +48,7 @@ module.exports = {
     salvar,
     atualizarSenha,
     atualizarNome,
+    atualizarId,
     excluir,
     excluirNome,
     buscarId,

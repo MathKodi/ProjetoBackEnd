@@ -136,11 +136,11 @@ router.put('/attNome/:nome', authhelper.veriftoken, async(req, res) =>{
     const id = decoded.id
     const nomeparams = req.params.nome
     if(!nomeparams){
-        return res.status(404).json({msg:'nome não informado para atualizar'})
+        return res.status(404).json({msg:'nome não informado para alterar'})
     }
     try{
         att = await Usuario.atualizarNome(id, nomeparams)
-        return res.status(200).json({msg: "Seu nome foi atualizado", att: att});
+        return res.status(200).json({msg: "Seu nome foi alterado", att: att});
     }  
     catch(error){
         console.log(error)
@@ -148,8 +148,43 @@ router.put('/attNome/:nome', authhelper.veriftoken, async(req, res) =>{
     }
 
 })
+//usuario alterar sua senha
+router.put('/attSenha/:senha', authhelper.veriftoken, async(req, res) =>{
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    const secret = process.env.SECRET;
+    const decoded = jwt.verify(token, secret);
+    const id = decoded.id
+    const senhaparams = req.params.senha
+    if(!senhaparams){
+        return res.status(404).json({msg:'senha não informada para alterar'})
+    }
+    try{
+        att = await Usuario.atualizarSenha(id, senhaparams)
+        return res.status(200).json({msg: "Sua senha foi alterado", att: att});
+    }  
+    catch(error){
+        console.log(error)
+        res.status(500).json({msg: 'erro no servidor'})
+    }
 
-//privado - apenas para verificar o token funcionando
+})
+//admin alterar dados dos outros
+router.put('/attUsuario/:id/:nome/:senha', authhelper.verifAdmin, async(req, res) =>{
+    const id = req.params.id
+    const nome = req.params.nome
+    const senha = req.params.senha
+    try{
+        att = await Usuario.atualizarId(id, nome, senha)
+        return res.status(200).json({msg: "Admin alterou esse usuario...", att: att});
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({msg: 'erro no servidor'})
+    }
+})
+
+//apenas para verificar o token funcionando
 router.get("/:id", authhelper.veriftoken, async (req, res) => {
     const id = req.params.id
     const user = await Usuario.buscarId(id)
