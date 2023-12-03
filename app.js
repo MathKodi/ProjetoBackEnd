@@ -10,6 +10,9 @@ app.use(express.json())
 const usuarioRotas = require('./routes/authAPI')
 app.use("/auth", usuarioRotas)
 
+const pokemonRotas = require('./routes/pokeAPI')
+app.use('/pokemon', pokemonRotas)
+
 //rota inicial
 app.get('/', (req,res) => {
     res.status(200).json({msg: "trabalho de back end - API de Pokemon"})
