@@ -3,6 +3,9 @@ require('dotenv').config()
 module.exports = {
     veriftoken(req, res, next) {
         const authHeader = req.headers['authorization']
+        if(!authHeader) {
+            return res.status(401).json({msg:'Token nao inserido'})
+        }
         const token = authHeader && authHeader.split(" ")[1]
         if(!token){
             return res.status(401).json({msg:'Acesso negado'})
@@ -19,6 +22,9 @@ module.exports = {
     },
     verifAdmin(req, res, next) {
         const authHeader = req.headers['authorization']
+        if(!authHeader) {
+            return res.status(401).json({msg:'Token nao inserido'})
+        }
         const token = authHeader && authHeader.split(" ")[1]
         if(!token){
             return res.status(401).json({msg:'Acesso negado'})

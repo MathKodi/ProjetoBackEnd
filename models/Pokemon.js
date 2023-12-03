@@ -1,29 +1,33 @@
 const mongoose = require('mongoose')
 
-const Treinador = mongoose.model('Treinador', {
-    nome: String,
-    idade: Number,
-    cidade: String,
-    pokemons: [
-      { type: mongoose.Schema.Types.ObjectId, ref: 'Pokemon' }
-    ],
-  });
-  
-  const Pokemon = mongoose.model('Pokemon', {
-    nome: String,
-    tipo: String,
-    numero: Number,
-    habilidades: [
-      { type: mongoose.Schema.Types.ObjectId, ref: 'Habilidade' }
-    ],
-  });
-  
-  const Habilidade = mongoose.model('Habilidade', {
-    id: { type: Number, required: true, unique: true },
-    nome: String,
-    descricao: String,
-  });
-  
+const TreinadorSchema = new mongoose.Schema({
+  nome: String,
+  idade: Number,
+  cidade: String,
+  pokemons: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'Pokemon' }
+  ],
+});
+
+const PokemonSchema = new mongoose.Schema({
+  nome: String,
+  tipo: String,
+  numero: Number,
+  habilidades: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'Habilidade' }
+  ],
+});
+
+const HabilidadeSchema = new mongoose.Schema({
+  id: { type: Number, required: true, unique: true },
+  nome: String,
+  descricao: String,
+});
+
+const Habilidade = mongoose.model('Habilidade', HabilidadeSchema);
+const Pokemon = mongoose.model('Pokemon', PokemonSchema);
+const Treinador = mongoose.model('Treinador', TreinadorSchema);
+
 module.exports = {
     Treinador,
     Pokemon,
