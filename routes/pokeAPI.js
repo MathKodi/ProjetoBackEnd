@@ -9,26 +9,37 @@ router.get('/', (req,res) => {
 })
 
 // criar habilidade
-router.post('/criarPokemon', authhelper.verifAdmin, async (req , res) => {
-    const {nome, tipo, numero} = req.body;
+router.post('/criarHabilidade', authhelper.verifAdmin, async (req , res) => {
+    const {id, nome, descricao, efeito, level} = req.body;
     if(!nome) {
         return res.status(422).json({msg: 'erro -> digite um nome'})
     }
-    if(!tipo) {
-        return res.status(422).json({msg: 'erro -> digite um tipo'})
+    if(!id) {
+        return res.status(422).json({msg: 'erro -> digite um id'})
     }
-    if(!numero) {
-        return res.status(422).json({msg: 'erro -> digite um numero'})
+    if(!descricao) {
+        return res.status(422).json({msg: 'erro -> digite uma descricao'})
+    }
+    if(!efeito) {
+        return res.status(422).json({msg: 'erro -> digite um efeito'})
+    }
+    if(!level) {
+        return res.status(422).json({msg: 'erro -> digite um level'})
+    }
+    habilidadeIdExistente = await Habilidade.findOne({id: id});
+    if(habilidadeIdExistente){
+        return res.status(422).json({msg: 'utilize outro id...'})
     }
     try{
-        let pokemon = new Pokemon({
+        let habilidade = new Habilidade({
+            id: id,
             nome: nome,
-            tipo: tipo,
-            numero: numero,
-            habilidades: []
+            descricao: descricao,
+            efeito: efeito,
+            level: level,
         })
-        await pokemon.save()
-        res.status(201).json({msg: 'Pokemon Criado! ', pokemon: pokemon}) 
+        await habilidade.save()
+        res.status(201).json({msg: 'Pokemon Criado! ', habilidade: habilidade}) 
     }
     catch(error){
         console.log(error)
