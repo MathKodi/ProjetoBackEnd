@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Pokemon = require('../models/Pokemon')
+const {Habilidade, Pokemon, Treinador} = require('../models/Pokemon')
 const Usuario = require('../models/Usuario')
 
 router.get('/', async (req, res) =>{
@@ -8,7 +8,7 @@ router.get('/', async (req, res) =>{
         const nome = "profadmin"
         const senha = "deusmeajuda"
 
-        const Admin = Usuario.salvar(nome, senha)
+        let admin = await Usuario.salvar(nome, senha)
 
         const habilidades = await Habilidade.create([
             { id: 1, nome: 'Chama Ardente', descricao: 'Ataque de fogo intenso', efeito: 'Queima o oponente', level: 1 },
@@ -54,7 +54,7 @@ router.get('/', async (req, res) =>{
             { nome: 'Red', level: 25, pokemons: [pokemons[11], pokemons[12], pokemons[10]] },
       ]);
   
-      res.status(200).json({ message: 'Banco de dados instalado com sucesso', Admin, treinadores, pokemons, habilidades });
+      res.status(200).json({ message: 'Banco de dados instalado com sucesso - Admin Criado -> nome: profadmin, senha: deusmeajuda', treinadores, pokemons, habilidades });
     } catch(error) {
         console.log(error)
         res.status(500).json({msg: 'erro no servidor ao instalar o banco de dados'})
