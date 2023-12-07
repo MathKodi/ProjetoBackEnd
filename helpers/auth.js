@@ -50,5 +50,5 @@ module.exports = {
             return res.status(422).json({msg: 'erro -> digite uma senha'})
         }
         next()
-    }
+    },
 }

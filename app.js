@@ -13,6 +13,9 @@ app.use("/auth", usuarioRotas)
 const pokemonRotas = require('./routes/pokeAPI')
 app.use('/pokemon', pokemonRotas)
 
+const installRota = require('./routes/install')
+app.use('/install', installRota)
+
 //rota inicial
 app.get('/', (req,res) => {
     res.status(200).json({msg: "trabalho de back end - API de Pokemon"})
