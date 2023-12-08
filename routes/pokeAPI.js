@@ -235,5 +235,31 @@ router.get('/treinadores', authhelper.veriftoken,async (req, res) => {
     }
   });
 
-
+// lógica de negócio 
+router.get('/habilidadesDisponiveis/:idTreinador', async (req, res) => {
+    try {
+      const idTreinador = req.params.idTreinador;
+      const treinador = await Treinador.findById(idTreinador);
+      if (!treinador) {
+        return res.status(404).json({ msg: 'Treinador não encontrado' });
+      }
+      const pokemonM = await Pokemon.findById(treinador.pokemons)
+        .populate('habilidades'); // Expande o array de habilidades
+  
+      const habilidadesDisponiveis = [];
+      for (const habilidade of pokemonM.habilidades) {
+        if (treinador.level >= habilidade.level) {
+          habilidadesDisponiveis.push(habilidade);
+        }
+      }
+  
+      res.json({ msg: 'Habilidades disponíveis para o Treinador usar dos seus pokemons...: ', habilidadesDisponiveis });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ msg: 'Erro no servidor' });
+    }
+});
+  
+  
+  
 module.exports = router
