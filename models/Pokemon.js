@@ -29,7 +29,6 @@ const Habilidade = mongoose.model('Habilidade', HabilidadeSchema);
 const Pokemon = mongoose.model('Pokemon', PokemonSchema);
 const Treinador = mongoose.model('Treinador', TreinadorSchema);
 
-
 module.exports = {
     Treinador,
     Pokemon,

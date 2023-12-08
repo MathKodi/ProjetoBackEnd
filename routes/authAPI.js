@@ -184,14 +184,14 @@ router.put('/attUsuario/:id/:nome/:senha', authhelper.verifAdmin, async(req, res
     }
 })
 
-//apenas para verificar o token funcionando
+// procurar usuario
 router.get("/:id", authhelper.veriftoken, async (req, res) => {
     const id = req.params.id
     const user = await Usuario.buscarId(id)
     if(!user){
         return res.status(404).json({msg:'usuario nao encontrado'})
     }
-    res.status(200).json({user})
+    res.status(200).json({msg: 'usuario encontrado', user})
 
     
 })

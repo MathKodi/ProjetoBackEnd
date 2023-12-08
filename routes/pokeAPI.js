@@ -73,5 +73,43 @@ router.post('/criarTreinador', authhelper.veriftoken, authhelper.verifTreinador,
         res.status(500).json({msg: 'erro no servidor'})
     }
 })
+// excluir Pokemon
+router.delete("/excluirPokemon/:id", authhelper.verifAdmin, async(req, res) => {
+    const id = req.params.id
+    const pokemon = await Pokemon.findById(id)
+    if(!id){
+        return res.status(404).json({msg:'id não informado'})
+    }
+    if(!pokemon){
+        return res.status(404).json({msg:'id do pokemon não encontrado'})
+    }
+    try{
+        const removido = await Pokemon.findByIdAndDelete(id)
+        return res.status(200).json({msg: "Pokemon Excluido.", removido: removido});
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({msg: 'erro no servidor'})
+    }
+})
 
+// excluir Treinador
+router.delete("/excluirTreinador/:nome", authhelper.verifAdmin, async(req, res) => {
+    const nome = req.params.nome
+    const treinador = await Treinador.findOne({nome: nome})
+    if(!nome){
+        return res.status(404).json({msg:'nome não informado'})
+    }
+    if(!treinador){
+        return res.status(404).json({msg:'Treinador não encontrado'})
+    }
+    try{
+        const removido = await Treinador.findOneAndDelete({nome: nome})
+        return res.status(200).json({msg: "Treinador Excluido.", removido: removido});
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({msg: 'erro no servidor'})
+    }
+})
 module.exports = router
