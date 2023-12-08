@@ -139,7 +139,7 @@ router.put('/attNome/:nome', authhelper.veriftoken, async(req, res) =>{
         return res.status(404).json({msg:'nome não informado para alterar'})
     }
     try{
-        att = await Usuario.findByIdAndUpdate(id, {nome: nome})
+        att = await Usuario.findByIdAndUpdate(id, {nome: nomeparams})
         return res.status(200).json({msg: "Seu nome foi alterado", att: att});
     }  
     catch(error){
@@ -160,7 +160,7 @@ router.put('/attSenha/:senha', authhelper.veriftoken, async(req, res) =>{
         return res.status(404).json({msg:'senha não informada para alterar'})
     }
     try{
-        att = await Usuario.findByIdAndUpdate(id, {senha: senha})
+        att = await Usuario.findByIdAndUpdate(id, {senha: senhaparams})
         return res.status(200).json({msg: "Sua senha foi alterado", att: att});
     }  
     catch(error){
