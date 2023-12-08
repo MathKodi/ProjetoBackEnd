@@ -93,5 +93,17 @@ module.exports = {
         }
         next()
     },
-    
+    verifAttTreinador(req, res, next) {
+        const {id, nome, level} = req.body
+        if(!id){
+            return res.status(404).json({msg:'Insira um id'})
+        }
+        if(!nome){
+            return res.status(404).json({msg:'Insira um nome'})
+        }
+        if(!level){
+            return res.status(404).json({msg:'Insira um level'})
+        }
+        next()
+    },
 }
