@@ -143,10 +143,6 @@ router.put('/attTreinador/', authhelper.verifAdmin, async(req, res) =>{
         if(!nome){
             return res.status(404).json({msg:'Insira um nome'})
         }
-        const auxPoke = await Pokemon.find({_id: pokemonId})
-        if(!auxPoke){
-            return res.status(404).json({msg:'Pokemon não encontrado'})
-        }
         att = await Treinador.findByIdAndUpdate(id, {nome: nome, pokemons: [pokemonId]})
         return res.status(200).json({msg: "Seu Treinador foi alterado", att: att});
     }  
