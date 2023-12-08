@@ -13,12 +13,12 @@ router.get('/', (req,res) => {
 router.post('/registrar', authhelper.verifDados, async(req, res) => {
     const {nome, senha} = req.body
     //verificar se usuario existe
-    const usuarioexistente = await Usuario.buscar(nome)
+    const usuarioexistente = await Usuario.findOne({nome: nome})
     if (usuarioexistente) {
         return res.status(422).json({msg: 'utilize outro nome...'})
     }
     try{
-        let aux = await Usuario.salvar(nome, senha)
+        let aux = await Usuario.create({nome, senha})
         res.status(201).json({msg: 'Registrado! ', aux: aux}) 
         
         
@@ -31,7 +31,7 @@ router.post('/registrar', authhelper.verifDados, async(req, res) => {
 router.post('/admin', authhelper.verifDados, authhelper.verifAdmin, async (req, res) =>{
     const {nome, senha} = req.body
     //verificar se usuario existe
-    const usuarioexistente = await Usuario.buscar(nome)
+    const usuarioexistente = await Usuario.findOne({nome: nome})
     if (usuarioexistente) {
         return res.status(422).json({msg: 'utilize outro nome...'})
     }
@@ -40,7 +40,7 @@ router.post('/admin', authhelper.verifDados, authhelper.verifAdmin, async (req, 
         return res.status(422).json({msg: `o nome precisa ter 'admin' para se tornar um admin`})
     }
     try{
-        let aux = await Usuario.salvar(nome, senha)
+        let aux = await Usuario.create({nome, senha})
         res.status(201).json({msg: 'Registrado! ', aux: aux}) 
          
     } catch(error){
@@ -54,7 +54,7 @@ router.post('/admin', authhelper.verifDados, authhelper.verifAdmin, async (req, 
 router.post("/login", authhelper.verifDados, async(req, res) => {
     const {nome, senha} = req.body
     //verificar se usuario existe
-    const usuarioexistente = await Usuario.buscar(nome)
+    const usuarioexistente = await Usuario.findOne({nome: nome})
     if (!usuarioexistente) {
         return res.status(422).json({msg: 'usuario nao encontrado'})
     }
@@ -99,7 +99,7 @@ router.delete("/excluirMinhaConta", authhelper.veriftoken, async(req, res) => {
     const decoded = jwt.verify(token, secret);
     const id = decoded.id
     try{
-        const usuario = await Usuario.excluir(id)
+        const usuario = await Usuario.findByIdAndDelete({_id: id})
         return res.status(200).json({msg: "Sua conta foi excluida.", usuario: usuario});
     }
     catch(error){
@@ -110,7 +110,7 @@ router.delete("/excluirMinhaConta", authhelper.veriftoken, async(req, res) => {
 //admin excluir qqlr um
 router.delete("/excluir/:nome", authhelper.verifAdmin, async(req, res) => {
     const nome = req.params.nome
-    const usuario = await Usuario.buscar(nome)
+    const usuario = await Usuario.findOne({nome: nome})
     if(!nome){
         return res.status(404).json({msg:'nome não informado'})
     }
@@ -118,7 +118,7 @@ router.delete("/excluir/:nome", authhelper.verifAdmin, async(req, res) => {
         return res.status(404).json({msg:'usuario nao encontrado'})
     }
     try{
-        const removido = await Usuario.excluirNome(nome)
+        const removido = await Usuario.findOneAndDelete({nome: nome})
         return res.status(200).json({msg: "Admin EXCLUIU essa conta", removido: removido});
     }
     catch(error){
@@ -139,7 +139,7 @@ router.put('/attNome/:nome', authhelper.veriftoken, async(req, res) =>{
         return res.status(404).json({msg:'nome não informado para alterar'})
     }
     try{
-        att = await Usuario.atualizarNome(id, nomeparams)
+        att = await Usuario.findByIdAndUpdate(id, {nome: nome})
         return res.status(200).json({msg: "Seu nome foi alterado", att: att});
     }  
     catch(error){
@@ -160,7 +160,7 @@ router.put('/attSenha/:senha', authhelper.veriftoken, async(req, res) =>{
         return res.status(404).json({msg:'senha não informada para alterar'})
     }
     try{
-        att = await Usuario.atualizarSenha(id, senhaparams)
+        att = await Usuario.findByIdAndUpdate(id, {senha: senha})
         return res.status(200).json({msg: "Sua senha foi alterado", att: att});
     }  
     catch(error){
@@ -175,7 +175,7 @@ router.put('/attUsuario/:id/:nome/:senha', authhelper.verifAdmin, async(req, res
     const nome = req.params.nome
     const senha = req.params.senha
     try{
-        att = await Usuario.atualizarId(id, nome, senha)
+        att = await Usuario.findByIdAndUpdate(id, {nome: nome, senha: senha})
         return res.status(200).json({msg: "Admin alterou esse usuario...", att: att});
     }
     catch(error){
@@ -184,16 +184,23 @@ router.put('/attUsuario/:id/:nome/:senha', authhelper.verifAdmin, async(req, res
     }
 })
 
-// procurar usuario
-router.get("/:id", authhelper.veriftoken, async (req, res) => {
-    const id = req.params.id
-    const user = await Usuario.buscarId(id)
-    if(!user){
-        return res.status(404).json({msg:'usuario nao encontrado'})
+//listar usuarios
+router.get('/usuarios', authhelper.verifAdmin,async (req, res) => {
+    const limite = parseInt(req.query.limite) || 5;
+    const pagina = parseInt(req.query.pagina) || 1;
+    if (limite === 5 || limite === 10 || limite === 30){
+        const usuarios = await Usuario.find()
+            .skip((pagina - 1) * limite)
+            .limit(limite);
+  
+        res.json(usuarios); 
+    } else{
+        res.status(404).send({
+            error: 'Limite inválido. Os valores possíveis são 5, 10 ou 30.'
+        });
     }
-    res.status(200).json({msg: 'usuario encontrado', user})
-
     
-})
+  });
+
 
 module.exports = router
