@@ -182,8 +182,58 @@ router.put('/attTreinador/', authhelper.verifAdmin, authhelper.verifAttTreinador
         res.status(500).json({msg: 'erro no servidor'})
     }
 })
+// Rota para listar Habilidades
+router.get('/habilidades', async (req, res) => {
+    const limite = req.query.limite || 5;
+    const pagina = req.query.pagina || 1;
+    if (limite === 5 || limite === 10 || limite === 30){
+        const habilidades = await Habilidade.find()
+            .skip((pagina - 1) * limite)
+            .limit(limite);
+  
+        res.json(habilidades); 
+    } else{
+        res.status(404).send({
+            error: 'Limite inválido. Os valores possíveis são 5, 10 ou 30.'
+        });
+    }
+    
+  });
+  
+  // Rota para listar Pokemons
+  router.get('/pokemons', async (req, res) => {
+    const limite = req.query.limite || 5;
+    const pagina = req.query.pagina || 1;
+    
+    if (limite === 5 || limite === 10 || limite === 30) {
+        const pokemons = await Pokemon.find()
+            .skip((pagina - 1) * limite)
+            .limit(limite);
+        res.json(pokemons);
+      } else {
+        res.status(404).send({
+          error: 'Limite inválido. Os valores possíveis são 5, 10 ou 30.'
+        });
+        }
+    });
 
-//
+// Rota para listar Treinadores
+router.get('/treinadores', async (req, res) => {
+    const limite = parseInt(req.query.limite) || 5;
+    const pagina = parseInt(req.query.pagina) || 1;
+  
+    if (limite === 5 || limite === 10 || limite === 30) {
+      const treinadores = await Treinador.find()
+        .skip((pagina - 1) * limite)
+        .limit(limite);
+  
+      res.json(treinadores);
+    } else {
+      res.status(404).send({
+        error: 'Limite inválido. Os valores possíveis são 5, 10 ou 30.'
+      });
+    }
+  });
 
 
 module.exports = router
