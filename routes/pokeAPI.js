@@ -183,9 +183,9 @@ router.put('/attTreinador/', authhelper.verifAdmin, authhelper.verifAttTreinador
     }
 })
 // Rota para listar Habilidades
-router.get('/habilidades', async (req, res) => {
-    const limite = req.query.limite || 5;
-    const pagina = req.query.pagina || 1;
+router.get('/habilidades', authhelper.verifAdmin,async (req, res) => {
+    const limite = parseInt(req.query.limite) || 5;
+    const pagina = parseInt(req.query.pagina) || 1;
     if (limite === 5 || limite === 10 || limite === 30){
         const habilidades = await Habilidade.find()
             .skip((pagina - 1) * limite)
@@ -201,9 +201,9 @@ router.get('/habilidades', async (req, res) => {
   });
   
   // Rota para listar Pokemons
-  router.get('/pokemons', async (req, res) => {
-    const limite = req.query.limite || 5;
-    const pagina = req.query.pagina || 1;
+  router.get('/pokemons', authhelper.verifAdmin,async (req, res) => {
+    const limite = parseInt(req.query.limite)  || 5;
+    const pagina = parseInt(req.query.pagina) || 1;
     
     if (limite === 5 || limite === 10 || limite === 30) {
         const pokemons = await Pokemon.find()
@@ -218,7 +218,7 @@ router.get('/habilidades', async (req, res) => {
     });
 
 // Rota para listar Treinadores
-router.get('/treinadores', async (req, res) => {
+router.get('/treinadores', authhelper.veriftoken,async (req, res) => {
     const limite = parseInt(req.query.limite) || 5;
     const pagina = parseInt(req.query.pagina) || 1;
   
