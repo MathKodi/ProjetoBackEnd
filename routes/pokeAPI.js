@@ -9,23 +9,8 @@ router.get('/', (req,res) => {
 })
 
 // criar habilidade
-router.post('/criarHabilidade', authhelper.verifAdmin, async (req , res) => {
+router.post('/criarHabilidade', authhelper.verifAdmin, authhelper.verifHabilidade, async (req , res) => {
     const {id, nome, descricao, efeito, level} = req.body;
-    if(!nome) {
-        return res.status(422).json({msg: 'erro -> digite um nome'})
-    }
-    if(!id) {
-        return res.status(422).json({msg: 'erro -> digite um id'})
-    }
-    if(!descricao) {
-        return res.status(422).json({msg: 'erro -> digite uma descricao'})
-    }
-    if(!efeito) {
-        return res.status(422).json({msg: 'erro -> digite um efeito'})
-    }
-    if(!level) {
-        return res.status(422).json({msg: 'erro -> digite um level'})
-    }
     habilidadeIdExistente = await Habilidade.findOne({id: id});
     if(habilidadeIdExistente){
         return res.status(422).json({msg: 'utilize outro id...'})
@@ -39,7 +24,7 @@ router.post('/criarHabilidade', authhelper.verifAdmin, async (req , res) => {
             level: level,
         })
         await habilidade.save()
-        res.status(201).json({msg: 'Pokemon Criado! ', habilidade: habilidade}) 
+        res.status(201).json({msg: 'Habilidade Criado! ', habilidade: habilidade}) 
     }
     catch(error){
         console.log(error)
@@ -48,17 +33,8 @@ router.post('/criarHabilidade', authhelper.verifAdmin, async (req , res) => {
 })
 
 // criar pokemon
-router.post('/criarPokemon', authhelper.verifAdmin, async (req , res) => {
+router.post('/criarPokemon', authhelper.verifAdmin, authhelper.verifPokemon,async (req , res) => {
     const {nome, tipo, numero} = req.body;
-    if(!nome) {
-        return res.status(422).json({msg: 'erro -> digite um nome'})
-    }
-    if(!tipo) {
-        return res.status(422).json({msg: 'erro -> digite um tipo'})
-    }
-    if(!numero) {
-        return res.status(422).json({msg: 'erro -> digite um numero'})
-    }
     try{
         let pokemon = new Pokemon({
             nome: nome,
@@ -77,14 +53,8 @@ router.post('/criarPokemon', authhelper.verifAdmin, async (req , res) => {
 
 
 // criar treinador
-router.post('/criarTreinador', authhelper.veriftoken, async (req , res) => {
+router.post('/criarTreinador', authhelper.veriftoken, authhelper.verifTreinador, async (req , res) => {
     const {nome, level} = req.body;
-    if(!nome) {
-        return res.status(422).json({msg: 'erro -> digite um nome'})
-    }
-    if(!level) {
-        return res.status(422).json({msg: 'erro -> digite um level'})
-    }
     treinadorexistente = await Treinador.findOne({nome: nome});
     if(treinadorexistente){
         return res.status(422).json({msg: 'utilize outro nome...'})

@@ -51,4 +51,46 @@ module.exports = {
         }
         next()
     },
+    verifTreinador(req, res, next){
+        const {nome, level} = req.body;
+        if(!nome) {
+            return res.status(422).json({msg: 'erro -> digite um nome'})
+        }
+        if(!level) {
+            return res.status(422).json({msg: 'erro -> digite um level'})
+        }
+        next()
+    },
+    verifPokemon(req, res, next){
+        const {nome, tipo, numero} = req.body;
+        if(!nome) {
+            return res.status(422).json({msg: 'erro -> digite um nome'})
+        }
+        if(!tipo) {
+            return res.status(422).json({msg: 'erro -> digite um tipo'})
+        }
+        if(!numero) {
+            return res.status(422).json({msg: 'erro -> digite um numero'})
+        }
+        next()
+    },
+    verifHabilidade(req, res, next){
+        const {id, nome, descricao, efeito, level} = req.body;
+        if(!nome) {
+            return res.status(422).json({msg: 'erro -> digite um nome'})
+        }
+        if(!id) {
+            return res.status(422).json({msg: 'erro -> digite um id'})
+        }
+        if(!descricao) {
+            return res.status(422).json({msg: 'erro -> digite uma descricao'})
+        }
+        if(!efeito) {
+            return res.status(422).json({msg: 'erro -> digite um efeito'})
+        }
+        if(!level) {
+            return res.status(422).json({msg: 'erro -> digite um level'})
+        }
+        next()
+    },
 }
