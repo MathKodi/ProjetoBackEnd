@@ -6,11 +6,13 @@ const authhelper = require('../helpers/auth');
 
 //rota inicial
 router.get('/', (req,res) => {
-    res.status(200).json({msg: "rota para registrar e login =)"})
+    // #swagger.description = 'Rota inicial para Usuarios'
+    res.status(200).json({msg: "rota para gerencias Usuarios e Login =)"})
 })
 
 //registrar
 router.post('/registrar', authhelper.verifDados, async(req, res) => {
+    // #swagger.description = 'Rota para registrar usuarios'
     const {nome, senha} = req.body
     //verificar se usuario existe
     const usuarioexistente = await Usuario.findOne({nome: nome})
@@ -29,6 +31,7 @@ router.post('/registrar', authhelper.verifDados, async(req, res) => {
 })
 //registar admin
 router.post('/admin', authhelper.verifDados, authhelper.verifAdmin, async (req, res) =>{
+    // #swagger.description = 'Rota para admins registrar novos admins'
     const {nome, senha} = req.body
     //verificar se usuario existe
     const usuarioexistente = await Usuario.findOne({nome: nome})
@@ -52,6 +55,7 @@ router.post('/admin', authhelper.verifDados, authhelper.verifAdmin, async (req, 
 
 //login
 router.post("/login", authhelper.verifDados, async(req, res) => {
+    // #swagger.description = 'Rota para Login de Usuario, caso o nome do usuario tenha 'admin', ele recebe token de Admin.
     const {nome, senha} = req.body
     //verificar se usuario existe
     const usuarioexistente = await Usuario.findOne({nome: nome})
@@ -91,8 +95,9 @@ router.post("/login", authhelper.verifDados, async(req, res) => {
     }
 })
 
-//usuario excluir sua conta !! perguntar p sor se outro usuario consegue excluir outro usuario
+//usuario excluir sua conta 
 router.delete("/excluirMinhaConta", authhelper.veriftoken, async(req, res) => {
+    // #swagger.description = 'Rota para o usuario excluir sua própria conta'
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     const secret = process.env.SECRET;
@@ -109,6 +114,7 @@ router.delete("/excluirMinhaConta", authhelper.veriftoken, async(req, res) => {
 })
 //admin excluir qqlr um
 router.delete("/excluir/:nome", authhelper.verifAdmin, async(req, res) => {
+    // #swagger.description = 'Rota para o admin excluir a conta de qualquer usuario'
     const nome = req.params.nome
     const usuario = await Usuario.findOne({nome: nome})
     if(!nome){
@@ -129,6 +135,7 @@ router.delete("/excluir/:nome", authhelper.verifAdmin, async(req, res) => {
 
 //usuario alterar seu nome
 router.put('/attNome/:nome', authhelper.veriftoken, async(req, res) =>{
+    // #swagger.description = 'Rota para o usuario alterar seu proprio nome'
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     const secret = process.env.SECRET;
@@ -150,6 +157,7 @@ router.put('/attNome/:nome', authhelper.veriftoken, async(req, res) =>{
 })
 //usuario alterar sua senha
 router.put('/attSenha/:senha', authhelper.veriftoken, async(req, res) =>{
+    // #swagger.description = 'Rota para o usuario alterar sua propria senha'
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     const secret = process.env.SECRET;
@@ -171,6 +179,7 @@ router.put('/attSenha/:senha', authhelper.veriftoken, async(req, res) =>{
 })
 //admin alterar dados dos outros
 router.put('/attUsuario/:id/:nome/:senha', authhelper.verifAdmin, async(req, res) =>{
+    // #swagger.description = 'Rota para o admin alterar os dados de outros usuarios'
     const id = req.params.id
     const nome = req.params.nome
     const senha = req.params.senha
@@ -186,6 +195,7 @@ router.put('/attUsuario/:id/:nome/:senha', authhelper.verifAdmin, async(req, res
 
 //listar usuarios
 router.get('/usuarios', authhelper.verifAdmin,async (req, res) => {
+    // #swagger.description = 'Rota para listar o Usuario, recebe query limite e pagina, limite para quantos usuarios aparecerao(5, 10, 30) e pagina para ver os proximos usuarios'
     const limite = parseInt(req.query.limite) || 5;
     const pagina = parseInt(req.query.pagina) || 1;
     if (limite === 5 || limite === 10 || limite === 30){

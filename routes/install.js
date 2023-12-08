@@ -4,6 +4,7 @@ const {Habilidade, Pokemon, Treinador} = require('../models/Pokemon')
 const Usuario = require('../models/Usuario')
 
 router.get('/', async (req, res) =>{
+    // #swagger.description = 'instala o banco de dados (criação das tabelas/coleções e inserção de dados no banco). '
     try{
         const admins = await Usuario.create([
             {nome: 'profadmin', senha: 'deusmeajuda'},

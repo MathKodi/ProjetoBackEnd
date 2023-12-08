@@ -16,9 +16,18 @@ app.use('/pokemon', pokemonRotas)
 const installRota = require('./routes/install')
 app.use('/install', installRota)
 
+//swagger
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger_doc.json')
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
 //rota inicial
 app.get('/', (req,res) => {
-    res.status(200).json({msg: "trabalho de back end - API de Pokemon"})
+    // #swagger.description = 'Rota inicial apenas dando boas vindas ao API'
+    res.status(200).json({
+        msg: "trabalho de back end - API de Pokemon"
+    })
 })
 
 const dbUser = process.env.DB_USER
