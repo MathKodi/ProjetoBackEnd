@@ -73,6 +73,26 @@ router.post('/criarTreinador', authhelper.veriftoken, authhelper.verifTreinador,
         res.status(500).json({msg: 'erro no servidor'})
     }
 })
+// excluir Habilidade
+router.delete("/excluirHabilidade/:id", authhelper.verifAdmin, async(req, res) => {
+    const id = req.params.id
+    if(!id){
+        return res.status(404).json({msg:'id não informado'})
+    }
+    try{
+        const habilidade = await Habilidade.findOne({id: id})
+        if(!habilidade){
+            return res.status(404).json({msg:'id da habilidade não encontrado'})
+        }
+        const removido = await Habilidade.findOneAndDelete({id: id})
+        return res.status(200).json({msg: "Habilidade Excluido.", removido: removido});
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({msg: 'erro no servidor'})
+    }
+})
+
 // excluir Pokemon
 router.delete("/excluirPokemon/:id", authhelper.verifAdmin, async(req, res) => {
     const id = req.params.id
