@@ -132,4 +132,29 @@ router.delete("/excluirTreinador/:nome", authhelper.verifAdmin, async(req, res) 
         res.status(500).json({msg: 'erro no servidor'})
     }
 })
+
+// atualizar Treinador - Adicionar Pokemon e mudar nome
+router.put('/attTreinador/', authhelper.verifAdmin, async(req, res) =>{
+    try{
+        const {id, nome, pokemonId} = req.body
+        if(!id){
+            return res.status(404).json({msg:'Insira um id'})
+        }
+        if(!nome){
+            return res.status(404).json({msg:'Insira um nome'})
+        }
+        const auxPoke = await Pokemon.find({_id: pokemonId})
+        if(!auxPoke){
+            return res.status(404).json({msg:'Pokemon não encontrado'})
+        }
+        att = await Treinador.findByIdAndUpdate(id, {nome: nome, pokemons: [pokemonId]})
+        return res.status(200).json({msg: "Seu Treinador foi alterado", att: att});
+    }  
+    catch(error){
+        console.log(error)
+        res.status(500).json({msg: 'erro no servidor'})
+    }
+
+})
+
 module.exports = router
