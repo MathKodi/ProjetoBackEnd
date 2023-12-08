@@ -16,7 +16,7 @@
         "description": "Rota inicial apenas dando boas vindas ao API",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Retorna msg de boas vindas"
           }
         }
       }
@@ -26,7 +26,7 @@
         "description": "Rota inicial para Usuarios",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Retorna msg de boas vindas na rota de auth"
           }
         }
       }
@@ -42,10 +42,10 @@
               "type": "object",
               "properties": {
                 "nome": {
-                  "example": "any"
+                  "example": "Para registrar admin: fulanoadmin | para adicionar usuario: fulano"
                 },
                 "senha": {
-                  "example": "any"
+                  "example": "deusmeajuda"
                 }
               }
             }
@@ -53,13 +53,13 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Usuario Criado"
           },
           "422": {
-            "description": "Unprocessable Entity"
+            "description": "Erro -> tentando usar nome existente"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -80,10 +80,10 @@
               "type": "object",
               "properties": {
                 "nome": {
-                  "example": "any"
+                  "example": "É necessário ter 'admin' no nome: Professoradmin"
                 },
                 "senha": {
-                  "example": "any"
+                  "example": "aaa123"
                 }
               }
             }
@@ -91,19 +91,19 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "admin criado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "acesso negado -> nao é admin ou não tem token"
           },
           "422": {
-            "description": "Unprocessable Entity"
+            "description": "Erro -> tentando usar nome existente ou o nome não possui 'admin'" 
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -119,10 +119,10 @@
               "type": "object",
               "properties": {
                 "nome": {
-                  "example": "any"
+                  "example": "nome existente: kodiadmin"
                 },
                 "senha": {
-                  "example": "any"
+                  "example": "senha do usuario: sabemuito"
                 }
               }
             }
@@ -130,13 +130,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "logado"
           },
           "422": {
-            "description": "Unprocessable Entity"
+            "description": "usuario nao encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -153,16 +153,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "excluido sucesso"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "não tem token"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -185,19 +185,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "admin excluiu alguma conta"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> usuario tentando acessar"
           },
           "404": {
-            "description": "Not Found"
+            "description": "nome não encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -220,19 +220,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "nome alterado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "acesso negado -> nao tem token ou token invalido"
           },
           "404": {
-            "description": "Not Found"
+            "description": "nome não informado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -255,19 +255,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "senha alterado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> não possui token"
           },
           "404": {
-            "description": "Not Found"
+            "description": "senha nao informada"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -302,16 +302,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "admin alterou outro usuario"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> usuario tentando acessar"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -338,26 +338,26 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "conseguiu listar com sucesso"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> usuario tentando acessar"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Query errado -> valor do query apenas 5, 10 ou 30"
           }
         }
       }
     },
     "/pokemon/": {
       "get": {
-        "description": "",
+        "description": "Rota incial apenas de boas vindas",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Retorna msg de boas vindas na rota de pokemon"
           }
         }
       }
@@ -378,19 +378,19 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "example": "any"
+                  "example": "precisa ser unico: 10"
                 },
                 "nome": {
-                  "example": "any"
+                  "example": "chute no saco"
                 },
                 "descricao": {
-                  "example": "any"
+                  "example": "doi muito"
                 },
                 "efeito": {
-                  "example": "any"
+                  "example": "atordoante"
                 },
                 "level": {
-                  "example": "any"
+                  "example": "10"
                 }
               }
             }
@@ -398,19 +398,19 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "habilidade criada"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> usuario tentando acessar"
           },
           "422": {
-            "description": "Unprocessable Entity"
+            "description": "erro -> utilizando id já existente"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -431,13 +431,13 @@
               "type": "object",
               "properties": {
                 "nome": {
-                  "example": "any"
+                  "example": "charizard"
                 },
                 "tipo": {
-                  "example": "any"
+                  "example": "fogo/voador"
                 },
                 "numero": {
-                  "example": "any"
+                  "example": "6"
                 }
               }
             }
@@ -445,19 +445,19 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "pokemon criado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> usuario tentando acessar"
           },
           "422": {
-            "description": "Unprocessable Entity"
+            "description": "erro -> falta digitar algum atributo no body"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -478,10 +478,10 @@
               "type": "object",
               "properties": {
                 "nome": {
-                  "example": "any"
+                  "example": "Kojins"
                 },
                 "level": {
-                  "example": "any"
+                  "example": "10"
                 }
               }
             }
@@ -489,19 +489,19 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Treinador criado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token nao inserido"
           },
           "422": {
-            "description": "Unprocessable Entity"
+            "description": "Erro -> tentando usar nome existente"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -524,19 +524,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "habilidade excluido"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> usuario tentando acessar"
           },
           "404": {
-            "description": "Not Found"
+            "description": "id da habilidade nao encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -559,19 +559,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "pokemon excluido"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> usuario tentando acessar"
           },
           "404": {
-            "description": "Not Found"
+            "description": "id do pokemon nao encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -594,19 +594,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "treinador excluido"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> usuario tentando acessar"
           },
           "404": {
-            "description": "Not Found"
+            "description": "treindor nao encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -627,19 +627,19 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "example": "any"
+                  "example": "o id da habilidade para atualizar: 10234234234a"
                 },
                 "nome": {
-                  "example": "any"
+                  "example": "nome a ser mudado: chute forte"
                 },
                 "descricao": {
-                  "example": "any"
+                  "example": "descricao a ser mudado: dependendo do q estiver calçando doi bastante"
                 },
                 "efeito": {
-                  "example": "any"
+                  "example": "efeito a ser mudado: dano alto"
                 },
                 "nivel": {
-                  "example": "any"
+                  "example": "nivel a ser mudado: 15"
                 }
               }
             }
@@ -647,19 +647,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "habilidade alterada"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> usuario tentando acessar"
           },
           "404": {
-            "description": "Not Found"
+            "description": "habilidade nao encontrado || dados nao inseridos no body"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -680,19 +680,19 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "example": "any"
+                  "example": "id do pokemon a ser atualizado: 42342342a"
                 },
                 "nome": {
-                  "example": "any"
+                  "example": "nome a ser mudado: charmander"
                 },
                 "tipo": {
-                  "example": "any"
+                  "example": "tipo a ser mudado: fogo"
                 },
                 "numero": {
-                  "example": "any"
+                  "example": "numero a ser mudado: 4"
                 },
                 "habilidades": {
-                  "example": "any"
+                  "example": "habilidades a ser mudado: [idHabilidade]"
                 }
               }
             }
@@ -700,19 +700,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "pokemon alterado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> usuario tentando acessar"
           },
           "404": {
-            "description": "Not Found"
+            "description": "dados não inseridos no body || pokemon nao encontrado p alterar"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -733,16 +733,16 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "example": "any"
+                  "example": "id do treinador a ser atualizado: art23iop4j24324"
                 },
                 "nome": {
-                  "example": "any"
+                  "example": "nome a ser att: kodnho"
                 },
                 "pokemonId": {
-                  "example": "any"
+                  "example": "array dos pokemons a serem atualizados: [idPokemon, idPokemon2]"
                 },
                 "level": {
-                  "example": "any"
+                  "example": "level a ser att: 32"
                 }
               }
             }
@@ -750,19 +750,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "treinador atualizado"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> usuario tentando acessar"
           },
           "404": {
-            "description": "Not Found"
+            "description": "dados não inseridos no body || treinador nao encontrado p alterar"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -789,16 +789,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "retorna as habilidades de acordo com o limite e a pagina"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> usuario tentando acessar"
           },
           "404": {
-            "description": "Not Found"
+            "description": "query do limite invalido"
           }
         }
       }
@@ -825,16 +825,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "retorna os pokemons de acordo com o limite e a pagina"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> usuario tentando acessar"
           },
           "404": {
-            "description": "Not Found"
+            "description": "query do limite invalido"
           }
         }
       }
@@ -861,16 +861,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "retorna os treinadores de acordo com o limite e a pagina"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "token invalido -> usuario tentando acessar"
           },
           "404": {
-            "description": "Not Found"
+            "description": "query do limite invalido"
           }
         }
       }
@@ -893,19 +893,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "retorna as habilidades que o treinador consegue usar dos seus pokemons"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "acesso negado -> nao tem token ou token invalido"
           },
           "404": {
-            "description": "Not Found"
+            "description": "treinador nao encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -928,19 +928,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "retorna quais pokemons o treinador possui"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido -> não possui token"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "acesso negado -> nao tem token ou token invalido"
           },
           "404": {
-            "description": "Not Found"
+            "description": "treinador nao encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
@@ -963,19 +963,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "retorna os nomes das habilidades que os pokemons possui"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "token invalido"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "acesso negado -> nao tem token ou token invalido"
           },
           "404": {
-            "description": "Not Found"
+            "description": "treinador nao encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "erro no servidor"
           }
         }
       }
