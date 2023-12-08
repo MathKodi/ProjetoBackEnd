@@ -11,21 +11,21 @@ router.get('/', async (req, res) =>{
         let admin = await Usuario.salvar(nome, senha)
 
         const habilidades = await Habilidade.create([
-            { id: 1, nome: 'Chama Ardente', descricao: 'Ataque de fogo intenso', efeito: 'Queima o oponente', level: 1 },
-            { id: 2, nome: 'Rajada de Folhas', descricao: 'Dispara uma rajada de folhas afiadas', efeito: 'Corta a defesa do oponente', level: 2 },
-            { id: 3, nome: 'Raio Trovejante', descricao: 'Lança um raio elétrico poderoso', efeito: 'Paralisa o oponente', level: 3 },
-            { id: 4, nome: 'Jato de Água', descricao: 'Lança um jato de água com alta pressão', efeito: 'Diminui a velocidade do oponente', level: 4 },
+            { id: 1, nome: 'Chama Ardente', descricao: 'Ataque de fogo intenso', efeito: 'Queima o oponente', level: 5 },
+            { id: 2, nome: 'Rajada de Folhas', descricao: 'Dispara uma rajada de folhas afiadas', efeito: 'Corta a defesa do oponente', level: 5 },
+            { id: 3, nome: 'Raio Trovejante', descricao: 'Lança um raio elétrico poderoso', efeito: 'Paralisa o oponente', level: 15 },
+            { id: 4, nome: 'Jato de Água', descricao: 'Lança um jato de água com alta pressão', efeito: 'Diminui a velocidade do oponente', level: 10 },
             { id: 5, nome: 'Garras Afiadas', descricao: 'Ataca com garras afiadas', efeito: 'Aumenta a chance de acerto crítico', level: 5 },
-            { id: 6, nome: 'Vento Cortante', descricao: 'Cria uma lâmina de vento cortante', efeito: 'Ignora a defesa do oponente', level: 6 },
-            { id: 7, nome: 'Terremoto', descricao: 'Provoca um terremoto poderoso', efeito: 'Derruba o oponente', level: 7 },
-            { id: 8, nome: 'Escudo de Terra', descricao: 'Cria um escudo de terra para se proteger', efeito: 'Aumenta a defesa do usuário', level: 8 },
-            { id: 9, nome: 'Ilusão Hipnótica', descricao: 'Cria ilusões para confundir o oponente', efeito: 'Diminui a precisão do oponente', level: 9 },
-            { id: 10, nome: 'Explosão Solar', descricao: 'Libera uma explosão de energia solar', efeito: 'Causa dano em área', level: 10 },
-            { id: 11, nome: 'Vento Cortante', descricao: 'Cria uma lâmina de vento cortante', efeito: 'Ignora a defesa do oponente', level: 11 },
-            { id: 12, nome: 'Confusão Mental', descricao: 'Causa confusão mental no oponente', efeito: 'Oponente pode atacar a si mesmo', level: 12 },
-            { id: 13, nome: 'Mergulho Profundo', descricao: 'Realiza um mergulho poderoso', efeito: 'Aumenta a defesa do usuário', level: 13 },
-            { id: 14, nome: 'Chicote de Vinhas', descricao: 'Ataca com um chicote de vinhas afiadas', efeito: 'Causa dano e diminui a velocidade do oponente', level: 14 },
-            { id: 15, nome: 'Gelo Cortante', descricao: 'Dispara lâminas de gelo afiadas', efeito: 'Congela o oponente', level: 15 },
+            { id: 6, nome: 'Vento Cortante', descricao: 'Cria uma lâmina de vento cortante', efeito: 'Ignora a defesa do oponente', level: 10 },
+            { id: 7, nome: 'Terremoto', descricao: 'Provoca um terremoto poderoso', efeito: 'Derruba o oponente', level: 30 },
+            { id: 8, nome: 'Escudo de Terra', descricao: 'Cria um escudo de terra para se proteger', efeito: 'Aumenta a defesa do usuário', level: 5 },
+            { id: 9, nome: 'Ilusão Hipnótica', descricao: 'Cria ilusões para confundir o oponente', efeito: 'Diminui a precisão do oponente', level: 20 },
+            { id: 10, nome: 'Explosão Solar', descricao: 'Libera uma explosão de energia solar', efeito: 'Causa dano em área', level: 50 },
+            { id: 11, nome: 'Vento Cortante', descricao: 'Cria uma lâmina de vento cortante', efeito: 'Ignora a defesa do oponente', level: 15 },
+            { id: 12, nome: 'Confusão Mental', descricao: 'Causa confusão mental no oponente', efeito: 'Oponente pode atacar a si mesmo', level: 30 },
+            { id: 13, nome: 'Mergulho Profundo', descricao: 'Realiza um mergulho poderoso', efeito: 'Aumenta a defesa do usuário', level: 15 },
+            { id: 14, nome: 'Chicote de Vinhas', descricao: 'Ataca com um chicote de vinhas afiadas', efeito: 'Causa dano e diminui a velocidade do oponente', level: 35 },
+            { id: 15, nome: 'Gelo Cortante', descricao: 'Dispara lâminas de gelo afiadas', efeito: 'Congela o oponente', level: 25 },
         ]);
   
         const pokemons = await Pokemon.create([

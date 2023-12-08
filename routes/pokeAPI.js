@@ -132,7 +132,21 @@ router.delete("/excluirTreinador/:nome", authhelper.verifAdmin, async(req, res) 
         res.status(500).json({msg: 'erro no servidor'})
     }
 })
-// atualizar Treinador - Adicionar Pokemon e mudar nome
+
+// atualizar Habilidade, mudar 
+router.put('/attHabilidade/', authhelper.verifAdmin, authhelper.verifAttHabilidade,async(req, res) =>{
+    try{
+        const {id, nome, descricao, efeito, nivel} = req.body
+        att = await Habilidade.findByIdAndUpdate(id, {nome: nome, descricao: descricao, efeito: efeito, nivel: nivel})
+        return res.status(200).json({msg: "Habilidade foi alterado", att: att});
+    }  
+    catch(error){
+        console.log(error)
+        res.status(500).json({msg: 'erro no servidor'})
+    }
+})
+
+// atualizar Pokemon - Adicionar habilidade e mudar nome, tipo, numero,
 router.put('/attPokemon/', authhelper.verifAdmin, authhelper.verifAttPokemon,async(req, res) =>{
     try{
         const {id, nome, tipo, numero, habilidades} = req.body
@@ -148,7 +162,6 @@ router.put('/attPokemon/', authhelper.verifAdmin, authhelper.verifAttPokemon,asy
         console.log(error)
         res.status(500).json({msg: 'erro no servidor'})
     }
-
 })
 
 // atualizar Treinador - Adicionar Pokemon e mudar nome
@@ -168,7 +181,9 @@ router.put('/attTreinador/', authhelper.verifAdmin, authhelper.verifAttTreinador
         console.log(error)
         res.status(500).json({msg: 'erro no servidor'})
     }
-
 })
+
+//
+
 
 module.exports = router

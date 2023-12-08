@@ -121,5 +121,24 @@ module.exports = {
             return res.status(404).json({msg:'Insira um numero'})
         }
         next()
-    }
+    },
+    verifAttHabilidade(req, res, next){
+        const {id, nome, descricao, efeito, nivel} = req.body
+        if(!id){
+            return res.status(404).json({msg:'Insira um id'})
+        }
+        if(!nome){
+            return res.status(404).json({msg:'Insira um nome'})
+        }
+        if(!descricao){
+            return res.status(404).json({msg:'Insira uma descricao'})
+        }
+        if(!efeito){
+            return res.status(404).json({msg:'Insira um efeito'})
+        }
+        if(!nivel){
+            return res.status(404).json({msg:'Insira um nivel'})
+        }
+        next()
+    },
 }
