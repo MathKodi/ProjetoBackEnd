@@ -133,17 +133,16 @@ router.delete("/excluirTreinador/:nome", authhelper.verifAdmin, async(req, res) 
     }
 })
 // atualizar Treinador - Adicionar Pokemon e mudar nome
-router.put('/attPokemon/', authhelper.verifAdmin, async(req, res) =>{
+router.put('/attPokemon/', authhelper.verifAdmin, authhelper.verifAttPokemon,async(req, res) =>{
     try{
-        const {nome, tipo, numero, habilidades} = req.body
-        if(!id){
-            return res.status(404).json({msg:'Insira um id'})
+        const {id, nome, tipo, numero, habilidades} = req.body
+        if(!habilidades){
+            att = await Pokemon.findByIdAndUpdate(id, {nome: nome, tipo: tipo, numero: numero})
+            return res.status(200).json({msg: "Pokemon foi alterado", att: att});
+        } else{
+            att2 = await Pokemon.findByIdAndUpdate(id, {nome: nome, tipo: tipo, numero: numero, habilidades: [habilidades]})
+            return res.status(200).json({msg: "Pokemon foi alterado", att2: att2});
         }
-        if(!nome){
-            return res.status(404).json({msg:'Insira um nome'})
-        }
-        att = await Treinador.findByIdAndUpdate(id, {nome: nome, pokemons: [pokemonId]})
-        return res.status(200).json({msg: "Seu Treinador foi alterado", att: att});
     }  
     catch(error){
         console.log(error)

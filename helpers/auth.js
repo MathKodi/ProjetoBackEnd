@@ -106,4 +106,20 @@ module.exports = {
         }
         next()
     },
+    verifAttPokemon(req, res, next){
+        const {id, nome, tipo, numero} = req.body
+        if(!id){
+            return res.status(404).json({msg:'Insira um id'})
+        }
+        if(!nome){
+            return res.status(404).json({msg:'Insira um nome'})
+        }
+        if(!tipo){
+            return res.status(404).json({msg:'Insira um tipo'})
+        }
+        if(!numero){
+            return res.status(404).json({msg:'Insira um numero'})
+        }
+        next()
+    }
 }
