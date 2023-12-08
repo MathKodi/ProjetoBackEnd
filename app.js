@@ -20,7 +20,7 @@ app.use('/install', installRota)
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_doc.json')
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 //rota inicial
 app.get('/', (req,res) => {
